@@ -104,6 +104,14 @@ public class GraphMST {
     {
         return _edges.containsKey(n1) && _edges.get(n1).containsKey(n2);
     }
+    
+    public Integer getEdgeWeight(int n1, int n2)
+    {
+        if (this.edgeExists(n1, n2)){
+            return _edges.get(n1).get(n2);
+        }
+        return null;
+    }
 
     public void addEdge(int e1, int e2, int w) {
         if (this.edgeExists(e1, e2)){
@@ -126,6 +134,28 @@ public class GraphMST {
             _nodes.add(n);
             this._nodeNumber++;
         }
+    }
+    
+    /**
+     * returns graph edges one with one end inside given array and the other - outside.
+     * @param seed
+     * @return GraphMST
+     */
+    public GraphMST getExternal(List<Integer> seed){
+        GraphMST g = new GraphMST();
+        HashMap<Integer, Integer> nodes;
+        for (int n : seed){
+            if (_edges.containsKey(n)){
+                nodes = _edges.get(n);
+                for (int m : nodes.keySet()){
+                    if (!seed.contains(m)){
+                        g.addEdge(n, m, nodes.get(m));
+                    }
+                }
+            }
+        
+        }
+        return g;
     }
 
     /**

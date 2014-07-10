@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -163,6 +164,91 @@ public class GraphMSTTest {
         g.addEdge(4, 3, 1);
         assertTrue(g.edgeExists(3, 4));
     }
+    
+    @Test
+    public void testGetExternalOfSingleNode(){
+        System.out.println("gets all edges of the single node");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 5, 2);
+        g.addEdge(1, 4, 1);
+        g.addEdge(4, 5, 3);
+        g.addEdge(2, 1, 7);
+        g.addEdge(3, 1, 2);
+        g.addEdge(2, 3, 1);
+        g.addEdge(2, 4, 3);
+        List<Integer> seed = new ArrayList();
+        seed.add(1);
+        GraphMST res = g.getExternal(seed);
+        assertEquals(res.getEdgeNumber(), 4);
+        assertTrue(res.edgeExists(1, 5));
+        assertTrue(res.edgeExists(1, 4));
+        assertTrue(res.edgeExists(1, 3));
+        assertTrue(res.edgeExists(1, 2));
+        
+        assertTrue(res.getEdgeWeight(1, 5) == 2);
+        assertTrue(res.getEdgeWeight(1, 4) == 1);
+        assertTrue(res.getEdgeWeight(1, 3) == 2);
+        assertTrue(res.getEdgeWeight(1, 2) == 7);
+
+    }
+
+    @Test
+    public void testGetExternalOfTwoNodes() {
+        System.out.println("get external edges of two nodes");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 5, 2);
+        g.addEdge(1, 4, 1);
+        g.addEdge(4, 5, 3);
+        g.addEdge(2, 1, 7);
+        g.addEdge(3, 1, 2);
+        g.addEdge(2, 3, 1);
+        g.addEdge(2, 4, 3);
+        List<Integer> seed = new ArrayList();
+        seed.add(1);
+        seed.add(4);
+        GraphMST res = g.getExternal(seed);
+        assertEquals(res.getEdgeNumber(), 5);
+        assertTrue(res.edgeExists(1, 5));
+        assertTrue(res.edgeExists(1, 3));
+        assertTrue(res.edgeExists(1, 2));
+
+        assertTrue(res.getEdgeWeight(1, 5) == 2);
+        assertTrue(res.getEdgeWeight(1, 3) == 2);
+        assertTrue(res.getEdgeWeight(1, 2) == 7);
+        
+        assertTrue(res.edgeExists(4, 5));
+        assertTrue(res.edgeExists(4, 2));
+
+        assertTrue(res.getEdgeWeight(4, 5) == 3);
+        assertTrue(res.getEdgeWeight(4, 2) == 3);
+    }
+    
+    @Test
+    public void testGetExternalOfThreeNodes() {
+        System.out.println("get external edges of three nodes");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 5, 2);
+        g.addEdge(1, 4, 1);
+        g.addEdge(4, 5, 3);
+        g.addEdge(2, 1, 7);
+        g.addEdge(3, 1, 2);
+        g.addEdge(2, 3, 1);
+        g.addEdge(2, 4, 3);
+        List<Integer> seed = new ArrayList();
+        seed.add(1);
+        seed.add(4);
+        seed.add(5);
+        GraphMST res = g.getExternal(seed);
+        assertEquals(res.getEdgeNumber(), 3);
+        assertTrue(res.edgeExists(1, 3));
+        assertTrue(res.edgeExists(1, 2));
+        assertTrue(res.edgeExists(4, 2));
+        assertTrue(res.getEdgeWeight(1, 3) == 2);
+        assertTrue(res.getEdgeWeight(1, 2) == 7);
+        assertTrue(res.getEdgeWeight(4, 2) == 3);
+    }
+    
+    
 
     
 }
