@@ -289,7 +289,7 @@ public class GraphMSTTest {
         GraphMST g2 = g.cheapestEdge();
         assertTrue(g2.getEdgeNumber() == 1);
         assertTrue(g2.edgeExists(1, 4) ||  g2.edgeExists(2, 3));
-        System.out.println(g2.getEdges());
+//        System.out.println(g2.getEdges());
 //        assertTrue(g2.getEdgeWeight(2, 6) == -5);
     }
     
@@ -305,7 +305,8 @@ public class GraphMSTTest {
     }
     
     @Test
-    public void testGetFirstEdge() {
+    public void testGetFirstEdge() 
+    {
         System.out.println("Return info about the edge of single edge graph");
         GraphMST g = new GraphMST();
         g.addEdge(1, 5, 2);
@@ -316,7 +317,8 @@ public class GraphMSTTest {
     }
     
     @Test
-    public void testGetFirstEdgeTwoEdges() {
+    public void testGetFirstEdgeTwoEdges() 
+    {
         System.out.println("Return info about the edge of two edge graph");
         GraphMST g = new GraphMST();
         g.addEdge(1, 5, 2);
@@ -337,4 +339,84 @@ public class GraphMSTTest {
             );
     }
     
+    
+    @Test
+    public void testGetTotalWeightEmpty()
+    {
+        System.out.println("Returns null if graph is empty");
+        GraphMST g = new GraphMST();
+        assertTrue(g.getTotalWeight() == null);
+    }
+
+    
+    @Test
+    public void testGetTotalWeightSingleEdge() 
+    {
+        System.out.println("Returns edge weigth if graph has only that edge");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 6, 10);
+        assertTrue(g.getTotalWeight() == 10);
+    }
+    
+    @Test
+    public void testGetTotalWeightFiveEdges() 
+    {
+        System.out.println("Returns sum of edge weigths");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 6, 10);
+        g.addEdge(3, 6, 3);
+        g.addEdge(2, 3, -4);
+        g.addEdge(2, 6, 2);
+        g.addEdge(6, 4, 6);
+        assertTrue(g.getTotalWeight() == 10 + 3 - 4 + 2 + 6);
+    }
+    
+    @Test
+    public void testGetMSTEmpty()
+    {
+        System.out.println("Returns empty graph if target graph is empty");
+        GraphMST g = new GraphMST();
+        GraphMST mst = g.getMST();
+        assertTrue(mst.getEdgeNumber() == 0);
+        assertTrue(mst.getNodeNumber() == 0);
+    }
+
+    
+    @Test
+    public void testGetMSTSingle() {
+        System.out.println("Returns single node graph if target graph has just one edge");
+        GraphMST g = new GraphMST();
+        g.addEdge(3, 2, 8);
+        GraphMST mst = g.getMST();
+        assertTrue(mst.getEdgeNumber() == 1);
+        assertTrue(mst.getNodeNumber() == 2);
+        assertTrue(mst.edgeExists(3, 2));
+        assertTrue(mst.getTotalWeight() == 8);
+    }
+
+    
+    @Test
+    public void testGetMSTSeven() {
+        System.out.println("Returns mst of graph with seven edges");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 5, 2);
+        g.addEdge(1, 4, 1);
+        g.addEdge(4, 5, 3);
+        g.addEdge(2, 1, 7);
+        g.addEdge(3, 1, 2);
+        g.addEdge(2, 3, 1);
+        g.addEdge(2, 4, 3);
+
+        
+        GraphMST mst = g.getMST();
+        assertTrue(mst.getEdgeNumber() == 4);
+        assertTrue(mst.getNodeNumber() == 5);
+        assertTrue(mst.edgeExists(1, 3));
+        assertTrue(mst.edgeExists(1, 5));
+        assertTrue(mst.edgeExists(1, 4));
+        assertTrue(mst.edgeExists(2, 3));
+        assertTrue(mst.getTotalWeight() == 6);
+    }
+
+
 }

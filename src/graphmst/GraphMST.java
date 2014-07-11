@@ -50,6 +50,19 @@ public class GraphMST {
      * number of edges in the graph
      */
     private int _edgeNumber;
+    
+    /**
+     * Total weight of the graph (sum of all edge weights)
+     */
+    private Integer _totalWeight;
+
+    /**
+     * _totalWeight getter
+     * @return Integer
+     */
+    public Integer getTotalWeight() {
+        return _totalWeight;
+    }
 
     /**
      * number of edges in the graph
@@ -65,6 +78,7 @@ public class GraphMST {
         this._edges = new HashMap();
         this._nodes = new ArrayList();
         this._nodeNumber = 0;
+        this._totalWeight = null;
     }
     
     /**
@@ -120,9 +134,23 @@ public class GraphMST {
         }
         _registerEdgeFromTo(e1, e2, w);
         _registerEdgeFromTo(e2, e1, w);
+        _increaseTotalWeight(w);
         this._edgeNumber++;
         this.addNode(e1);
         this.addNode(e2);
+    }
+    
+    /**
+     * If _totalWeight is set, increases it by given value, otherwise set it to 
+     * that value.
+     */
+    private void _increaseTotalWeight(int w)
+    {
+        if (this._totalWeight == null){
+            this._totalWeight = w;
+        } else {
+            this._totalWeight += w;
+        }
     }
 
     /**
@@ -206,11 +234,38 @@ public class GraphMST {
             result[2] = _edges.get(e1).get(e2);
         }
         return result;
-        
-        
-        
-    
     }
+    
+    /**
+     * Return MST of the graph
+     * @return GraphMST
+     */
+    public GraphMST getMST()
+    {
+        GraphMST gResult = new GraphMST(),
+                gExt, gCheapest;
+        Integer[] edgeInfo;
+        int e1, e2, w;
+        Iterator<Integer> it = _nodes.iterator();
+        if (it.hasNext()){
+            int node = it.next();
+            List<Integer> seed = new ArrayList();
+            seed.add(node);
+            gExt = this.getExternal(seed);
+            while (seed.size() < this._nodeNumber || gExt.getNodeNumber() != 0) {
+                gCheapest = gExt.cheapestEdge();
+                edgeInfo = gCheapest.getFirstEdge();
+                e1 = edgeInfo[0];
+                e2 = edgeInfo[1];
+                w = edgeInfo[2];
+                gResult.addEdge(e1, e2, w);
+                seed.add(seed.contains(e1) ? e2 : e1);
+                gExt = this.getExternal(seed);
+            }
+        }
+        return gResult;
+    }
+    
     /**
      * Returns list of edges that form MST of the graph.
      *
