@@ -6,7 +6,15 @@
 
 package graphmst;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator; 
 import java.util.List;
@@ -54,13 +62,13 @@ public class GraphMST {
     /**
      * Total weight of the graph (sum of all edge weights)
      */
-    private Integer _totalWeight;
+    private BigInteger _totalWeight;
 
     /**
      * _totalWeight getter
      * @return Integer
      */
-    public Integer getTotalWeight() {
+    public BigInteger getTotalWeight() {
         return _totalWeight;
     }
 
@@ -147,9 +155,10 @@ public class GraphMST {
     private void _increaseTotalWeight(int w)
     {
         if (this._totalWeight == null){
-            this._totalWeight = w;
+            this._totalWeight = new BigInteger(Integer.toString(w));
         } else {
-            this._totalWeight += w;
+            BigInteger newWeight = this._totalWeight.add(new BigInteger(Integer.toString(w)));
+            this._totalWeight = newWeight;
         }
     }
 
@@ -285,7 +294,50 @@ public class GraphMST {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        DateFormat df;
+        df = new SimpleDateFormat("HH:mm:ss");
+        System.out.println(df.format(new Date()) + ": loading graph" );
+        BufferedReader br = null;
+        String fileName = "c:\\Users\\Andrea\\Documents\\courses\\algo2\\graphMST\\edges.txt";
+        GraphMST g = new GraphMST();
+        try {
+            Integer counter = 0;
+            Integer weight, e1, e2;
+            String sCurrentLine;
+            br = new BufferedReader(new FileReader(fileName));
+//            int total = Integer.parseInt();
+            br.readLine();
+            String[] data;
+            while ((sCurrentLine = br.readLine()) != null) {
+                counter++;
+                data = sCurrentLine.trim().split(" ");
+                if (data.length != 3) {
+                    throw new IllegalArgumentException("Line must contain exactly three numbers, not " + data.length + "!");
+                }
+                e1 = Integer.parseInt(data[0]);
+                e2 = Integer.parseInt(data[1]);
+                weight = Integer.parseInt(data[2]);
+                g.addEdge(e1, e2, weight);
+                
+                counter++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        System.out.println( df.format(new Date()) + ": graph contains " + g.getNodeNumber() + " nodes and " 
+                + g.getEdgeNumber() + " edges");
+        
+        
+        System.out.println(g.getMST().getTotalWeight());
+
     }
     
     

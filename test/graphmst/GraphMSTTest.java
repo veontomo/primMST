@@ -355,7 +355,7 @@ public class GraphMSTTest {
         System.out.println("Returns edge weigth if graph has only that edge");
         GraphMST g = new GraphMST();
         g.addEdge(1, 6, 10);
-        assertTrue(g.getTotalWeight() == 10);
+        assertEquals(g.getTotalWeight().toString(), "10");
     }
     
     @Test
@@ -368,7 +368,8 @@ public class GraphMSTTest {
         g.addEdge(2, 3, -4);
         g.addEdge(2, 6, 2);
         g.addEdge(6, 4, 6);
-        assertTrue(g.getTotalWeight() == 10 + 3 - 4 + 2 + 6);
+        System.out.println(g.getTotalWeight());
+        assertEquals(g.getTotalWeight().toString(), Integer.toString(10 + 3 - 4 + 2 + 6));
     }
     
     @Test
@@ -391,7 +392,7 @@ public class GraphMSTTest {
         assertTrue(mst.getEdgeNumber() == 1);
         assertTrue(mst.getNodeNumber() == 2);
         assertTrue(mst.edgeExists(3, 2));
-        assertTrue(mst.getTotalWeight() == 8);
+        assertEquals(mst.getTotalWeight().toString(), Integer.toString(8));
     }
 
     
@@ -415,7 +416,7 @@ public class GraphMSTTest {
         assertTrue(mst.edgeExists(1, 5));
         assertTrue(mst.edgeExists(1, 4));
         assertTrue(mst.edgeExists(2, 3));
-        assertTrue(mst.getTotalWeight() == 6);
+        assertEquals(mst.getTotalWeight().toString(), Integer.toString(6));
     }
 
 
