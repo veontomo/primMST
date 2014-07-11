@@ -8,7 +8,8 @@ package graphmst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List; 
+import java.util.Iterator; 
+import java.util.List;
 import java.util.Set;
 /**
  *
@@ -158,6 +159,58 @@ public class GraphMST {
         return g;
     }
 
+    public GraphMST cheapestEdge(){
+        GraphMST g = new GraphMST();
+        Integer e1 = null, e2 = null, weightMin = null, weightCurrent;
+        for (int end1 : _edges.keySet()){
+            HashMap<Integer, Integer> nodes = _edges.get(end1);
+            for (int end2 : nodes.keySet()){
+                if (end1 < end2) {
+                    weightCurrent = nodes.get(end2);
+                    if (e1 == null) {
+                        e1 = end1;
+                        e2 = end2;
+                        weightMin = weightCurrent;
+                    } else {
+                        if (weightCurrent < weightMin) {
+                            e1 = end1;
+                            e2 = end2;
+                            weightMin = weightCurrent;
+                        }
+                    }
+                }
+            }
+        }
+        if (e1 != null){
+            g.addEdge(e1, e2, weightMin);
+        }
+        return g;
+    }
+    
+    /**
+     * Returns three-element array that contains information about the first
+     * edge present in the graph: first node number, second node number
+     * and edge weight
+     * @return int[3]
+     */
+    public Integer[] getFirstEdge(){
+        Integer[] result = new Integer[3];
+        Set<Integer> keys = _edges.keySet();
+        Iterator<Integer> iter = keys.iterator();
+        if (iter.hasNext()){
+            int e1 = iter.next();
+            Iterator<Integer> iter2 = _edges.get(e1).keySet().iterator();
+            int e2 = iter2.next();
+            result[0] = e1;
+            result[1] = e2;
+            result[2] = _edges.get(e1).get(e2);
+        }
+        return result;
+        
+        
+        
+    
+    }
     /**
      * Returns list of edges that form MST of the graph.
      *

@@ -249,6 +249,92 @@ public class GraphMSTTest {
     }
     
     
+    @Test
+    public void testGetCheapestEdgeIfSingle()
+    {
+        System.out.println("Return the only edge of the graph");
+        GraphMST g = new GraphMST();
+        g.addEdge(3, 8, 2);
+        GraphMST g2 = g.cheapestEdge();
+        assertTrue(g2.getEdgeNumber() == 1);
+        assertTrue(g2.edgeExists(3, 8));
+        assertTrue(g2.getEdgeWeight(3, 8) == 2);
 
+    }
+    
+    
+    @Test
+    public void testGetCheapestEdgeIfTwoEdges() {
+        System.out.println("Return the the cheapest of two edges.");
+        GraphMST g = new GraphMST();
+        g.addEdge(3, 8, 2);
+        g.addEdge(2, 6, -5);
+        GraphMST g2 = g.cheapestEdge();
+        assertTrue(g2.getEdgeNumber() == 1);
+        assertTrue(g2.edgeExists(2, 6));
+        assertTrue(g2.getEdgeWeight(2, 6) == -5);
+    }
+    
+    @Test
+    public void testGetCheapestEdgeIfSevenEdges() {
+        System.out.println("Return one of the the cheapest edges among seven-edge graph.");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 5, 2);
+        g.addEdge(1, 4, 1);
+        g.addEdge(4, 5, 3);
+        g.addEdge(2, 1, 7);
+        g.addEdge(3, 1, 2);
+        g.addEdge(2, 3, 1);
+        g.addEdge(2, 4, 3);
+        GraphMST g2 = g.cheapestEdge();
+        assertTrue(g2.getEdgeNumber() == 1);
+        assertTrue(g2.edgeExists(1, 4) ||  g2.edgeExists(2, 3));
+        System.out.println(g2.getEdges());
+//        assertTrue(g2.getEdgeWeight(2, 6) == -5);
+    }
+    
+    @Test
+    public void testGetFirstEdgeEmptyGraph()
+    {
+        System.out.println("Return array with un-initialized values if graph is empty.");
+        GraphMST g = new GraphMST();
+        Integer[] edge = g.getFirstEdge();
+        assertTrue(edge[0] == null);
+        assertTrue(edge[1] == null);
+        assertTrue(edge[2] == null);
+    }
+    
+    @Test
+    public void testGetFirstEdge() {
+        System.out.println("Return info about the edge of single edge graph");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 5, 2);
+        Integer[] edge = g.getFirstEdge();
+        assertTrue(edge[0] == 1);
+        assertTrue(edge[1] == 5);
+        assertTrue(edge[2] == 2);
+    }
+    
+    @Test
+    public void testGetFirstEdgeTwoEdges() {
+        System.out.println("Return info about the edge of two edge graph");
+        GraphMST g = new GraphMST();
+        g.addEdge(1, 5, 2);
+        g.addEdge(4, 3, 1);
+        Integer[] edge = g.getFirstEdge();
+        assertTrue(
+                (
+                    ((edge[0] == 1 && edge[1] == 5)  ||  (edge[0] == 5 && edge[1] == 1) ) 
+                        &&
+                     edge[2] == 2
+                ) 
+                ||
+                ( 
+                    ((edge[0] == 4 && edge[1] == 3) || (edge[0] == 3 && edge[1] == 4) )
+                        && 
+                    edge[2] == 1
+                ) 
+            );
+    }
     
 }
